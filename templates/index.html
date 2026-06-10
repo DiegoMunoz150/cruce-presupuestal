@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cruce Presupuestal</title>
+</head>
+<body>
+
+    <h1>Cruce Presupuestal</h1>
+
+    <form
+        action="/generar"
+        method="post"
+        enctype="multipart/form-data"
+    >
+
+        <p>Archivo de Ingresos</p>
+        <input
+            type="file"
+            name="ingresos"
+            required
+        >
+
+        <p>Archivo de Egresos</p>
+        <input
+            type="file"
+            name="egresos"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">
+            Generar Cruce
+        </button>
+
+    </form>
+
+</body>
+</html>
