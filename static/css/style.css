@@ -50,64 +50,91 @@ body {
     background: #0066cc;
 }
 
-/* ========================= */
-/* HERO (EXTREMO A EXTREMO CORREGIDO) */
-/* ========================= */
-.hero {
+/* ==========================================================================
+   HERO BANNER DE EXTREMO A EXTREMO CON IMAGEN DE FONDO
+   ========================================================================== */
+.hero-slider-bg {
+    position: relative;
+    width: 100vw;
+    min-height: 85vh; /* Ocupa de manera fluida la pantalla */
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    
+    /* Configuración de la imagen de fondo de extremo a extremo */
+    background-image: url('/static/img/hero.jpg'); 
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0; /* Quitamos el padding para permitir que la imagen toque el borde */
-    background: #ffffff; /* Fondo blanco para la sección del Hero */
-    width: 100%;
+    justify-content: center;
+    padding: 80px 20px;
 }
 
-.hero-text {
-    width: 50%;
-    padding: 80px; /* Devolvemos tus 80px originales solo al texto */
-}
-
-.hero-text h1 {
-    font-size: 60px;
-    color: #003a8c;
-    line-height: 1.1;
-}
-
-.hero-text p {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #4a5568;
-}
-
-/* Contenedor de la Imagen a la derecha sin espacios */
-.hero-image {
-    width: 50%;
-    height: 650px; /* Altura ideal fija para que luzca imponente */
-}
-
-.hero-image img {
+/* Capa oscura superpuesta para máxima legibilidad de las letras */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Llena el espacio sin estirarse ni deformarse */
-    border-radius: 0;  /* Bordes rectos para ir de extremo a extremo */
-    display: block;
+    background: rgba(0, 18, 51, 0.65); /* Tono azul oscuro/negro translúcido */
+    z-index: 1;
 }
 
-/* ========================= */
-/* FORMULARIO Y AVISO DE ACCESO */
-/* ========================= */
+/* Contenido flotante centralizado encima de la imagen */
+.hero-center-content {
+    position: relative;
+    z-index: 2; /* Se posiciona encima del overlay */
+    width: 100%;
+    max-width: 650px; /* Limita el ancho para que el diseño no se deforme */
+    text-align: center;
+    color: #ffffff;
+}
+
+.hero-center-content h4 {
+    color: #0a84ff;
+    letter-spacing: 3px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.hero-center-content h1 {
+    font-size: 56px;
+    color: #ffffff;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.hero-center-content p {
+    font-size: 18px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    margin-bottom: 35px;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==========================================================================
+   FORMULARIO ADAPTADO SOBRE EL HERO BANNER
+   ========================================================================== */
 .upload-form {
-    margin-top: 30px;
-    background: #f8fafc;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.96); /* Fondo blanco sutilmente translúcido */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: none;
+    text-align: left; /* Alineación limpia para textos y cajas de subida */
 }
 
 .upload-form label {
     display: block;
-    font-weight: 500;
+    font-weight: 600;
     color: #003a8c;
     margin-bottom: 8px;
     font-size: 14px;
@@ -116,11 +143,13 @@ body {
 .upload-form input[type="file"] {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 20px;
-    border: 1px dashed #cbd5e1;
-    border-radius: 6px;
-    background: white;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #334155;
+    cursor: pointer;
 }
 
 .upload-form button {
@@ -128,30 +157,31 @@ body {
     background: #0a84ff;
     color: white;
     border: none;
-    padding: 12px;
+    padding: 14px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
 .upload-form button:hover {
     background: #0066cc;
+    transform: translateY(-1px);
 }
 
 /* Cuadro de aviso para usuarios no autenticados */
 .access-prompt {
-    margin-top: 30px;
-    background: #fff9db;
-    padding: 25px;
-    border-radius: 12px;
-    border-left: 5px solid #fab005;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
 }
 
 .lock-text {
-    color: #2c2e33;
+    color: #334155;
     font-size: 16px;
     font-weight: 500;
 }
@@ -159,7 +189,7 @@ body {
 .btn-cta-login {
     display: inline-block;
     margin-top: 15px;
-    background: #2b8a3e;
+    background: #2b8a3e; /* Verde de acción seguro */
     color: white;
     padding: 12px 25px;
     border-radius: 8px;
@@ -190,6 +220,11 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,.08);
 }
 
+.card h3 {
+    color: #003a8c;
+    margin-bottom: 15px;
+}
+
 /* ========================= */
 /* BLOQUE AZUL ORIGINAL */
 /* ========================= */
@@ -204,15 +239,19 @@ body {
     padding: 60px;
 }
 
-/* Corrección de la alineación interna del bloque azul */
 .blue-text {
     width: 50%;
+}
+
+.blue-text h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
 }
 
 .blue-image img {
     width: 450px;
     border-radius: 20px;
-    display: block; /* Asegura que no rompa el flujo */
+    display: block;
 }
 
 /* ========================= */
@@ -232,20 +271,16 @@ footer img {
 
 /* Responsive para celulares y pantallas pequeñas */
 @media (max-width: 992px) {
-    .hero {
-        flex-direction: column;
+    .hero-slider-bg {
+        padding: 40px 10px;
+        min-height: auto;
     }
-    .hero-text, .hero-image {
-        width: 100%;
-    }
-    .hero-text {
-        padding: 40px 20px;
-    }
-    .hero-image {
-        height: 400px;
+    .hero-center-content h1 {
+        font-size: 38px;
     }
     .cards {
         flex-direction: column;
+        padding: 30px 20px;
     }
     .blue-section {
         flex-direction: column;

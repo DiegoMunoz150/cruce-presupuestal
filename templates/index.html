@@ -32,38 +32,32 @@
         </ul>
     </nav>
 
-    <section class="hero-full-width">
-        <div class="hero-content-wrapper">
-            <div class="hero-text" data-aos="zoom-in">
-                <h4>BIENVENIDO A</h4>
-                <h1>CRUCE PRESUPUESTAL</h1>
-                <p>
-                    Plataforma inteligente para el análisis,
-                    conciliación y validación de información
-                    presupuestal entre ingresos y egresos.
-                </p>
+    <section class="hero-slider-bg">
+        <div class="hero-overlay"></div> <div class="hero-center-content" data-aos="zoom-in">
+            <h4>BIENVENIDO A</h4>
+            <h1>CRUCE PRESUPUESTAL</h1>
+            <p>
+                Plataforma inteligente para el análisis,
+                conciliación y validación de información
+                presupuestal entre ingresos y egresos.
+            </p>
 
-                {% if current_user.is_authenticated %}
-                    <form action="/generar" method="post" enctype="multipart/form-data" class="upload-form">
-                        <label>Archivo de Ingresos</label>
-                        <input type="file" name="ingresos" required>
+            {% if current_user.is_authenticated %}
+                <form action="/generar" method="post" enctype="multipart/form-data" class="upload-form">
+                    <label>Archivo de Ingresos</label>
+                    <input type="file" name="ingresos" required>
 
-                        <label>Archivo de Egresos</label>
-                        <input type="file" name="egresos" required>
+                    <label>Archivo de Egresos</label>
+                    <input type="file" name="egresos" required>
 
-                        <button type="submit">Generar Cruce</button>
-                    </form>
-                {% else %}
-                    <div class="access-prompt">
-                        <p class="lock-text">🔒 Inicie sesión para acceder a la herramienta de cruce presupuestal.</p>
-                        <a href="/login" class="btn-cta-login">Acceder / Iniciar Sesión</a>
-                    </div>
-                {% endif %}
-            </div>
-
-            <div class="hero-image">
-                <img src="/static/img/hero.jpg" alt="Governance">
-            </div>
+                    <button type="submit">Generar Cruce</button>
+                </form>
+            {% else %}
+                <div class="access-prompt">
+                    <p class="lock-text">🔒 Inicie sesión para acceder a la herramienta de cruce presupuestal.</p>
+                    <a href="/login" class="btn-cta-login">Acceder / Iniciar Sesión</a>
+                </div>
+            {% endif %}
         </div>
     </section>
 
