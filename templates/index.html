@@ -32,8 +32,27 @@
         </ul>
     </nav>
 
-    <section class="hero-slider-bg">
-        <div class="hero-overlay"></div> <div class="hero-center-content" data-aos="zoom-in">
+    <section class="hero-slider-container">
+        <!-- El carrusel de imágenes de fondo -->
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <!-- Foto 1 (Asegúrate de subirlas a tu carpeta static/img/) -->
+                <div class="swiper-slide" style="background-image: url('/static/img/hero.jpg');"></div>
+                <!-- Foto 2 -->
+                <div class="swiper-slide" style="background-image: url('/static/img/hero2.jpg');"></div>
+                <!-- Foto 3 -->
+                <div class="swiper-slide" style="background-image: url('/static/img/hero3.jpg');"></div>
+            </div>
+            
+            <!-- Flechas de navegación (Estilo idéntico al de tu referencia) -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+
+        <div class="hero-overlay"></div> <!-- Capa oscura unificada para el contraste -->
+        
+        <!-- El contenido se mantiene flotando exactamente al centro -->
+        <div class="hero-center-content" data-aos="zoom-in">
             <h4>BIENVENIDO A</h4>
             <h1>CRUCE PRESUPUESTAL</h1>
             <p>
@@ -60,6 +79,26 @@
             {% endif %}
         </div>
     </section>
+
+    <!-- INYECCIÓN DE ESTILOS Y SCRIPTS DE SWIPER (Colócalos justo antes del cierre del body) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Inicialización del Slider -->
+    <script>
+    var swiper = new Swiper(".mySwiper", {
+        loop: true,               // Hace que el slider sea infinito
+        effect: "fade",           // Transición elegante desvanecida en lugar de un empujón brusco
+        autoplay: {
+            delay: 5000,          // Cambia de foto automáticamente cada 5 segundos
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+    </script>
 
     <section class="cards">
         <div class="card" data-aos="fade-up">
