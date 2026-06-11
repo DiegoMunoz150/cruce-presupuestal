@@ -51,9 +51,6 @@ body {
 }
 
 /* ==========================================================================
-   HERO BANNER DE EXTREMO A EXTREMO CON IMAGEN DE FONDO
-   ========================================================================== */
-/* ==========================================================================
    HERO CON SLIDER INCORPORADO (EXTREMO A EXTREMO)
    ========================================================================== */
 .hero-slider-container {
@@ -66,10 +63,9 @@ body {
     align-items: center;
     justify-content: center;
     padding: 80px 20px;
-    overflow: hidden;
+    overflow: hidden; /* Corta los bordes de la imagen cuando se agranda */
 }
 
-/* Forzamos a que Swiper ocupe todo el fondo absoluto de la sección */
 .hero-slider-container .swiper {
     position: absolute;
     top: 0;
@@ -79,29 +75,54 @@ body {
     z-index: 0;
 }
 
-/* Estilos individuales para cada foto del carrusel */
 .hero-slider-container .swiper-slide {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Mantiene el zoom bajo control */
+}
+
+/* ==========================================================================
+   EFECTO DE ANIMACIÓN ZOOM-IN CINEMATOGRÁFICO
+   ========================================================================== */
+.slide-zoom-bg {
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
+    transform: scale(1); /* Estado inicial */
+    transition: transform 0s; /* Evita saltos bruscos al volver atrás */
 }
 
-/* Capa oscura protectora por encima de las fotos pero por debajo de las letras */
+/* Cuando la imagen se vuelve activa en pantalla, empieza el Zoom-In progresivo */
+.swiper-slide-active .slide-zoom-bg {
+    animation: zoomInEffect 7s ease-out forwards;
+}
+
+@keyframes zoomInEffect {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.12); /* Crece un 12% emulando el zoom-in de AOS de fondo */
+    }
+}
+
+/* Layer oscuro protector */
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 18, 51, 0.60); /* Ajusta este valor si quieres el fondo más o menos oscuro */
-    z-index: 1;
+    background: rgba(0, 18, 51, 0.65);
+    z-index: 1; /* Por encima de las fotos en movimiento */
+    pointer-events: none; /* Permite hacer clic a través de él en las flechas */
 }
 
 .hero-center-content {
     position: relative;
-    z-index: 2; /* Por encima de las fotos y del overlay */
+    z-index: 2; /* Por encima de todo */
     width: 100%;
     max-width: 650px;
     text-align: center;
@@ -109,33 +130,40 @@ body {
 }
 
 /* ==========================================================================
-   DISEÑO DE LAS FLECHAS DE NAVEGACIÓN (Estilo Minimalista Blanco)
+   DISEÑO CORREGIDO DE LAS FLECHAS BLANCAS CIRCULARES
    ========================================================================== */
 .hero-slider-container .swiper-button-next,
 .hero-slider-container .swiper-button-prev {
-    color: #002e7a !important; /* Color de la flecha interna */
-    background: rgba(255, 255, 255, 0.9); /* Fondo blanco circular */
+    color: #002e7a !important; 
+    background: rgba(255, 255, 255, 0.85); 
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    z-index: 3; /* Visibles sobre el contenido */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 10; /* Máxima prioridad para clics */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     transition: all 0.3s ease;
 }
 
-/* Hace que las flechas internas se vean más compactas y estéticas */
 .hero-slider-container .swiper-button-next:after,
 .hero-slider-container .swiper-button-prev:after {
-    font-size: 20px !important;
+    font-size: 18px !important;
     font-weight: bold;
 }
 
 .hero-slider-container .swiper-button-next:hover,
 .hero-slider-container .swiper-button-prev:hover {
     background: #ffffff;
-    transform: scale(1.1); /* Efecto pop al pasar el mouse */
+    transform: scale(1.1);
+    color: #0a84ff !important;
 }
 
+/* Reposicionamiento sutil en los extremos de la pantalla */
+.hero-slider-container .swiper-button-next {
+    right: 30px;
+}
+.hero-slider-container .swiper-button-prev {
+    left: 30px;
+}
 /* ==========================================================================
    FORMULARIO ADAPTADO SOBRE EL HERO BANNER
    ========================================================================== */
