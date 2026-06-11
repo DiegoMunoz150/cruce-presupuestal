@@ -1,112 +1,109 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
-    background:#f5f7fb;
+body {
+    background: #f5f7fb;
+    overflow-x: hidden; /* Evita cualquier scroll horizontal no deseado */
 }
 
-.navbar{
-    background:#002e7a;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 50px;
+/* ========================= */
+/* NAVBAR */
+/* ========================= */
+.navbar {
+    background: #002e7a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
 }
 
-.logo img{
-    height:70px;
+.logo img {
+    height: 70px;
 }
 
-.navbar ul{
-    display:flex;
-    list-style:none;
-    gap:30px;
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    align-items: center; /* Alinea el botón verticalmente con los demás enlaces */
 }
 
-.navbar a{
-    color:white;
-    text-decoration:none;
-    font-weight:500;
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.hero{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:80px;
+/* Botón Iniciar/Cerrar Sesión en la Navbar */
+.btn-login-nav {
+    background: #0a84ff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
 }
 
-.hero-text{
-    width:45%;
+.btn-login-nav:hover {
+    background: #0066cc;
 }
 
-.hero-text h1{
-    font-size:60px;
-    color:#003a8c;
+/* ========================= */
+/* HERO (EXTREMO A EXTREMO) */
+/* ========================= */
+.hero-full-width {
+    width: 100vw;
+    background: #ffffff; /* Fondo blanco para la sección del Hero */
+    display: flex;
+    justify-content: center;
 }
 
-.hero-text p{
-    margin-top:20px;
-    font-size:18px;
+.hero-content-wrapper {
+    width: 100%;
+    max-width: 100%; /* Permite que vaya de extremo a extremo */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.btn{
-    display:inline-block;
-    margin-top:30px;
-    background:#0a84ff;
-    color:white;
-    padding:12px 25px;
-    border-radius:8px;
-    text-decoration:none;
+.hero-text {
+    width: 50%;
+    padding: 80px; /* Mantiene tu espaciado interno original */
 }
 
-.hero-image img{
-    width:600px;
-    border-radius:20px;
+.hero-text h1 {
+    font-size: 60px;
+    color: #003a8c;
+    line-height: 1.1;
 }
 
-.cards{
-    display:flex;
-    gap:30px;
-    padding:60px;
+.hero-text h4 {
+    color: #0a84ff;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
 }
 
-.card{
-    flex:1;
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+.hero-text p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #4a5568;
 }
 
-.blue-section{
-    background:#003a8c;
-    color:white;
-    margin:50px;
-    border-radius:25px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:60px;
+/* Contenedor de la Imagen del Hero a Pantalla Completa */
+.hero-image {
+    width: 50%;
+    height: 650px; /* Define una altura fija ideal para el Hero */
 }
 
-.blue-image img{
-    width:450px;
-    border-radius:20px;
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Hace que la imagen llene el espacio de extremo a extremo sin deformarse */
+    border-radius: 0;  /* Quitamos bordes redondeados para el efecto extremo a extremo */
+    display: block;
 }
 
-footer{
-    background:#002e7a;
-    color:white;
-    text-align:center;
-    padding:40px;
-}
-
-footer img{
-    height:80px;
-    margin-bottom:15px;
-}
+/* ========================= */
+/* FORMULARIO Y
