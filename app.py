@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, render_template, request, redirect, send_file, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from flask_bcrypt import Bcrypt
@@ -60,10 +60,11 @@ def test():
     return "Flask funciona"
 
 @app.route("/logout")
-@login_required
 def logout():
-    logout_user()
-    return redirect("/login")
+    logout_user()  # Limpia la sesión del usuario actual
+    response = make_response(redirect("/"))
+    response.set_cookie('session', '', expires=0) # Borra la cookie de sesión de Flask
+    return response
 
 @app.route("/generar", methods=["POST"])
 @login_required
