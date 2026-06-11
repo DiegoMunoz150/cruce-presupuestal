@@ -10,7 +10,8 @@ import os
 # ======================
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'cambia-esto-por-una-clave-larga-random'
+# NOTA: En producción, cambia esto por una variable de entorno: os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'Yolo09876*')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 db = SQLAlchemy(app)
@@ -28,7 +29,8 @@ class User(db.Model, UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    # Uso de session.get en lugar de query.get (más actualizado para SQLAlchemy)
+    return db.session.get(User, int(user_id))
 
 # ======================
 # RUTAS
@@ -85,26 +87,21 @@ def generar():
     return send_file(ruta_salida, as_attachment=True)
 
 # ======================
-# CREAR DB Y USUARIO (SEGURO)
+# CREAR DB Y USUARIO (Fuera del __main__)
 # ======================
-def inicializar_db():
-    with app.app_context():
-        db.create_all()
-
-        user_existente = User.query.filter_by(username="admin").first()
-
-        if not user_existente:
-            hashed_pw = bcrypt.generate_password_hash("1234").decode('utf-8')
-            user = User(username="admin", password=hashed_pw)
-            db.session.add(user)
-            db.session.commit()
-            print("Usuario admin creado")
-        else:
-            print("Usuario admin ya existe")
+# Al ponerlo aquí, se ejecutará tanto en local como en el servidor de Render
+with app.app_context():
+    db.create_all()
+    user_existente = User.query.filter_by(username="admin").first()
+    if not user_existente:
+        hashed_pw = bcrypt.generate_password_hash("1234").decode('utf-8')
+        user = User(username="admin", password=hashed_pw)
+        db.session.add(user)
+        db.session.commit()
+        print("Usuario admin creado con éxito")
 
 # ======================
-# RUN
+# RUN (Solo para desarrollo local)
 # ======================
 if __name__ == "__main__":
-    inicializar_db()
     app.run(debug=True)
