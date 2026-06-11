@@ -1,72 +1,110 @@
-from fastapi import FastAPI, UploadFile, File, Request
-from fastapi.responses import FileResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-import shutil
+from flask import Flask, render_template, request, redirect, send_file
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
+from flask_bcrypt import Bcrypt
+from motor_excel import generar_cruce
 import os
 
-from motor_excel import generar_cruce
+# ======================
+# APP
+# ======================
+app = Flask(__name__)
 
-app = FastAPI()
+app.config['SECRET_KEY'] = 'cambia-esto-por-una-clave-larga-random'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
-templates = Jinja2Templates(directory="templates")
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = "login"
+bcrypt = Bcrypt(app)
 
-app.mount(
-    "/static",
-    StaticFiles(directory="static"),
-    name="static"
-)
+# ======================
+# MODELO
+# ======================
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 
-@app.get("/")
-async def inicio(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html"
-    )
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
+# ======================
+# RUTAS
+# ======================
+@app.route("/")
+@login_required
+def home():
+    return render_template("index.html")
 
-@app.post("/generar")
-async def generar(
-    ingresos: UploadFile = File(...),
-    egresos: UploadFile = File(...)
-):
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
 
-    ruta_ingresos = os.path.join(
-        "uploads",
-        "ingresos.xlsx"
-    )
+        user = User.query.filter_by(username=username).first()
 
-    ruta_egresos = os.path.join(
-        "uploads",
-        "egresos.xlsx"
-    )
+        if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            return redirect("/")
 
-    ruta_salida = os.path.join(
-        "outputs",
-        "CRUCE_FINAL.xlsx"
-    )
+        return "Credenciales inválidas"
 
-    with open(ruta_ingresos, "wb") as buffer:
-        shutil.copyfileobj(
-            ingresos.file,
-            buffer
-        )
+    return render_template("login.html")
 
-    with open(ruta_egresos, "wb") as buffer:
-        shutil.copyfileobj(
-            egresos.file,
-            buffer
-        )
+@app.route("/test")
+def test():
+    return "Flask funciona"
 
-    generar_cruce(
-        ruta_ingresos,
-        ruta_egresos,
-        ruta_salida
-    )
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/login")
 
-    return FileResponse(
-        ruta_salida,
-        filename="CRUCE_FINAL.xlsx",
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+@app.route("/generar", methods=["POST"])
+@login_required
+def generar():
+    ingresos = request.files["ingresos"]
+    egresos = request.files["egresos"]
 
+    os.makedirs("uploads", exist_ok=True)
+    os.makedirs("outputs", exist_ok=True)
+
+    ruta_ingresos = "uploads/ingresos.xlsx"
+    ruta_egresos = "uploads/egresos.xlsx"
+    ruta_salida = "outputs/CRUCE_FINAL.xlsx"
+
+    ingresos.save(ruta_ingresos)
+    egresos.save(ruta_egresos)
+
+    generar_cruce(ruta_ingresos, ruta_egresos, ruta_salida)
+
+    return send_file(ruta_salida, as_attachment=True)
+
+# ======================
+# CREAR DB Y USUARIO (SEGURO)
+# ======================
+def inicializar_db():
+    with app.app_context():
+        db.create_all()
+
+        user_existente = User.query.filter_by(username="admin").first()
+
+        if not user_existente:
+            hashed_pw = bcrypt.generate_password_hash("1234").decode('utf-8')
+            user = User(username="admin", password=hashed_pw)
+            db.session.add(user)
+            db.session.commit()
+            print("Usuario admin creado")
+        else:
+            print("Usuario admin ya existe")
+
+# ======================
+# RUN
+# ======================
+if __name__ == "__main__":
+    inicializar_db()
+    app.run(debug=True)
