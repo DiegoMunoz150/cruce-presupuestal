@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 
@@ -10,6 +11,11 @@ app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static"
+)
 
 @app.get("/")
 async def inicio(request: Request):
@@ -63,3 +69,4 @@ async def generar(
         filename="CRUCE_FINAL.xlsx",
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
+

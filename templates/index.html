@@ -1,39 +1,288 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-    <title>Cruce Presupuestal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Governance - Cruce Presupuestal</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+        href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 </head>
+
 <body>
 
-    <h1>Cruce Presupuestal</h1>
+    <!-- ========================= -->
+    <!-- NAVBAR -->
+    <!-- ========================= -->
 
-    <form
-        action="/generar"
-        method="post"
-        enctype="multipart/form-data"
-    >
+    <nav class="navbar">
 
-        <p>Archivo de Ingresos</p>
-        <input
-            type="file"
-            name="ingresos"
-            required
+        <div class="logo">
+            <img src="/static/img/governance.png" alt="Governance">
+        </div>
+
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Nosotros</a></li>
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#">Soluciones</a></li>
+            <li><a href="#">Recursos</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+
+    </nav>
+
+    <!-- ========================= -->
+    <!-- HERO -->
+    <!-- ========================= -->
+
+    <section class="hero">
+
+        <div class="hero-text"
+        data-aos="fade-up">
+
+            <h4>BIENVENIDO A</h4>
+
+            <h1>CRUCE PRESUPUESTAL</h1>
+
+            <p>
+                Plataforma inteligente para el análisis,
+                conciliación y validación de información
+                presupuestal entre ingresos y egresos.
+            </p>
+
+            <form
+                action="/generar"
+                method="post"
+                enctype="multipart/form-data"
+                class="upload-form"
+            >
+
+                <label>
+                    Archivo de Ingresos
+                </label>
+
+                <input
+                    type="file"
+                    name="ingresos"
+                    required
+                >
+
+                <label>
+                    Archivo de Egresos
+                </label>
+
+                <input
+                    type="file"
+                    name="egresos"
+                    required
+                >
+
+                <button type="submit">
+                    Generar Cruce
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="hero-image">
+
+            <img
+                src="/static/img/hero.jpg"
+                alt="Governance"
+            >
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- TARJETAS -->
+    <!-- ========================= -->
+
+    <section class="cards">
+
+        <div class="card"
+        data-aos="fade-up">
+
+            <h3>Automatización</h3>
+
+            <p>
+                Reduce horas de trabajo manual
+                mediante la generación automática
+                de cruces presupuestales.
+            </p>
+
+        </div>
+
+        <div class="card"
+        data-aos="fade-up">
+
+            <h3>Validación</h3>
+
+            <p>
+                Verifica recaudos, registros,
+                pagos y recursos en bancos
+                en cuestión de segundos.
+            </p>
+
+        </div>
+
+        <div class="card"
+        data-aos="fade-up">
+
+            <h3>Transparencia</h3>
+
+            <p>
+                Mejora los procesos de control,
+                seguimiento y auditoría financiera.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- BLOQUE AZUL -->
+    <!-- ========================= -->
+
+    <section class="blue-section">
+
+        <div class="blue-text"
+        data-aos="fade-up">
+
+            <h2>
+                Transformamos datos en decisiones
+            </h2>
+
+            <p>
+
+                Governance desarrolla soluciones
+                tecnológicas enfocadas en análisis,
+                automatización y optimización de
+                procesos financieros y administrativos.
+
+            </p>
+
+        </div>
+
+        <div class="blue-image">
+
+            <img
+                src="/static/img/building.jpg"
+                alt="Governance"
+            >
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- SEGUNDA FILA -->
+    <!-- ========================= -->
+
+    <section class="cards">
+
+        <div class="card"
+        data-aos="fade-up">
+
+            <h3>Consultoría</h3>
+
+            <p>
+                Diseñamos soluciones adaptadas
+                a cada organización.
+            </p>
+
+        </div>
+
+        <div class="card"
+        data-aos="fade-up">
+
+            <h3>Tecnología</h3>
+
+            <p>
+                Herramientas modernas para
+                optimizar la gestión pública
+                y privada.
+            </p>
+
+        </div>
+
+        <div class="card"
+        data-aos="fade-up">
+
+            <h3>Capacitación</h3>
+
+            <p>
+                Formación especializada
+                para fortalecer equipos
+                de trabajo.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- CTA FINAL -->
+    <!-- ========================= -->
+
+    <section class="blue-section final">
+
+        <div 
+        class="blue-text"
+        data-aos="fade-up">
+
+            <h2>
+                Construimos hoy el futuro
+                que imaginas
+            </h2>
+
+            <p>
+
+                Soluciones tecnológicas
+                enfocadas en eficiencia,
+                transparencia e innovación.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- FOOTER -->
+    <!-- ========================= -->
+
+    <footer>
+
+        <img
+            src="/static/img/governance.png"
+            alt="Governance"
         >
 
-        <p>Archivo de Egresos</p>
-        <input
-            type="file"
-            name="egresos"
-            required
-        >
+        <p>
+            © 2026 Governance Solutions.
+            Todos los derechos reservados.
+        </p>
 
-        <br><br>
+    </footer>
 
-        <button type="submit">
-            Generar Cruce
-        </button>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
-    </form>
-
+    <script>
+    AOS.init({
+        duration: 1200,
+        once: true
+    });
+    </script>
+    
 </body>
+
 </html>
