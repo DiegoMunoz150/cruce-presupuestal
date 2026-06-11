@@ -7,7 +7,7 @@
 
 body {
     background: #f5f7fb;
-    overflow-x: hidden; /* Evita cualquier scroll horizontal no deseado */
+    overflow-x: hidden; /* Evita scrolls horizontales raros */
 }
 
 /* ========================= */
@@ -29,7 +29,7 @@ body {
     display: flex;
     list-style: none;
     gap: 30px;
-    align-items: center; /* Alinea el botón verticalmente con los demás enlaces */
+    align-items: center;
 }
 
 .navbar a {
@@ -51,26 +51,20 @@ body {
 }
 
 /* ========================= */
-/* HERO (EXTREMO A EXTREMO) */
+/* HERO (EXTREMO A EXTREMO CORREGIDO) */
 /* ========================= */
-.hero-full-width {
-    width: 100vw;
-    background: #ffffff; /* Fondo blanco para la sección del Hero */
-    display: flex;
-    justify-content: center;
-}
-
-.hero-content-wrapper {
-    width: 100%;
-    max-width: 100%; /* Permite que vaya de extremo a extremo */
+.hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0; /* Quitamos el padding para permitir que la imagen toque el borde */
+    background: #ffffff; /* Fondo blanco para la sección del Hero */
+    width: 100%;
 }
 
 .hero-text {
     width: 50%;
-    padding: 80px; /* Mantiene tu espaciado interno original */
+    padding: 80px; /* Devolvemos tus 80px originales solo al texto */
 }
 
 .hero-text h1 {
@@ -79,31 +73,191 @@ body {
     line-height: 1.1;
 }
 
-.hero-text h4 {
-    color: #0a84ff;
-    letter-spacing: 2px;
-    margin-bottom: 5px;
-}
-
 .hero-text p {
     margin-top: 20px;
     font-size: 18px;
     color: #4a5568;
 }
 
-/* Contenedor de la Imagen del Hero a Pantalla Completa */
+/* Contenedor de la Imagen a la derecha sin espacios */
 .hero-image {
     width: 50%;
-    height: 650px; /* Define una altura fija ideal para el Hero */
+    height: 650px; /* Altura ideal fija para que luzca imponente */
 }
 
 .hero-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Hace que la imagen llene el espacio de extremo a extremo sin deformarse */
-    border-radius: 0;  /* Quitamos bordes redondeados para el efecto extremo a extremo */
+    object-fit: cover; /* Llena el espacio sin estirarse ni deformarse */
+    border-radius: 0;  /* Bordes rectos para ir de extremo a extremo */
     display: block;
 }
 
 /* ========================= */
-/* FORMULARIO Y
+/* FORMULARIO Y AVISO DE ACCESO */
+/* ========================= */
+.upload-form {
+    margin-top: 30px;
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid #e2e8f0;
+}
+
+.upload-form label {
+    display: block;
+    font-weight: 500;
+    color: #003a8c;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.upload-form input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 6px;
+    background: white;
+}
+
+.upload-form button {
+    width: 100%;
+    background: #0a84ff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.upload-form button:hover {
+    background: #0066cc;
+}
+
+/* Cuadro de aviso para usuarios no autenticados */
+.access-prompt {
+    margin-top: 30px;
+    background: #fff9db;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 5px solid #fab005;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+}
+
+.lock-text {
+    color: #2c2e33;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.btn-cta-login {
+    display: inline-block;
+    margin-top: 15px;
+    background: #2b8a3e;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-cta-login:hover {
+    background: #237032;
+    transform: translateY(-1px);
+}
+
+/* ========================= */
+/* TARJETAS ORIGINALES */
+/* ========================= */
+.cards {
+    display: flex;
+    gap: 30px;
+    padding: 60px;
+}
+
+.card {
+    flex: 1;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+/* ========================= */
+/* BLOQUE AZUL ORIGINAL */
+/* ========================= */
+.blue-section {
+    background: #003a8c;
+    color: white;
+    margin: 50px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px;
+}
+
+/* Corrección de la alineación interna del bloque azul */
+.blue-text {
+    width: 50%;
+}
+
+.blue-image img {
+    width: 450px;
+    border-radius: 20px;
+    display: block; /* Asegura que no rompa el flujo */
+}
+
+/* ========================= */
+/* FOOTER ORIGINAL */
+/* ========================= */
+footer {
+    background: #002e7a;
+    color: white;
+    text-align: center;
+    padding: 40px;
+}
+
+footer img {
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+/* Responsive para celulares y pantallas pequeñas */
+@media (max-width: 992px) {
+    .hero {
+        flex-direction: column;
+    }
+    .hero-text, .hero-image {
+        width: 100%;
+    }
+    .hero-text {
+        padding: 40px 20px;
+    }
+    .hero-image {
+        height: 400px;
+    }
+    .cards {
+        flex-direction: column;
+    }
+    .blue-section {
+        flex-direction: column;
+        margin: 20px;
+        padding: 40px 20px;
+        text-align: center;
+    }
+    .blue-text {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    .blue-image img {
+        width: 100%;
+    }
+}
