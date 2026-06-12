@@ -6,7 +6,7 @@ from motor_excel import generar_cruce
 import os
 
 # ======================
-# APP
+# APP Permisos y Configuración
 # ======================
 app = Flask(__name__)
 
