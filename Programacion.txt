@@ -1,0 +1,6 @@
+Cosas por hacer:
+-Verificar seguridad de la pagina
+-Mejorar login.html
+-Mejorar la gráfica
+-Organizar mejor la pagina
+-mejorar el logo
