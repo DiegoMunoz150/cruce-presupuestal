@@ -6,6 +6,9 @@ from openpyxl.formatting.rule import CellIsRule
 from openpyxl.chart import BarChart, Reference  # Importación para el gráfico
 from openpyxl.chart.shapes import GraphicalProperties
 from openpyxl.drawing.fill import PatternFillProperties, ColorChoice
+from openpyxl.drawing.line import LineProperties
+import analisis_datos as ad
+
 
 def generar_cruce(archivo_ingresos, archivo_egresos, archivo_salida):
     
@@ -103,7 +106,7 @@ def generar_cruce(archivo_ingresos, archivo_egresos, archivo_salida):
         ws3[f"M{fila}"] = f'=H{fila}+J{fila}+L{fila}'
 
     # ==========================================================================
-    # 4. HOJA 4: REPORTE FILTRADO + GRÁFICO PERSONALIZADO (image_5b0a1e.png)
+    # 4. HOJA 4: REPORTE FILTRADO + GRÁFICO PERSONALIZADO 
     # ==========================================================================
     ws4 = wb_nuevo.create_sheet("REPORTE FILTRADO")
     
@@ -280,6 +283,149 @@ def generar_cruce(archivo_ingresos, archivo_egresos, archivo_salida):
             fill=PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type='solid')
         )
     )
+
+
+    # ==========================================================================
+    # HOJA NUEVA: GRAFICOS - "Esfuerzo tributario municipal" (versión mejorada)
+    # ==========================================================================
+    ws_graf = wb_nuevo.create_sheet("GRAFICOS")
+
+    chart2 = BarChart()
+    chart2.type = "bar"                 # barras horizontales
+    chart2.grouping = "clustered"       # agrupadas, NO superpuestas
+    chart2.overlap = -20                # separación entre series (negativo = espacio)
+    chart2.gapWidth = 100                # espacio entre categorías
+    chart2.style = 10
+    chart2.title = "Esfuerzo tributario municipal"
+
+    # Datos: Presupuesto Definitivo (col 3) y Recaudos (col 4)
+    data2 = Reference(ws4, min_col=3, min_row=1, max_col=4, max_row=ws4.max_row)
+    cats2 = Reference(ws4, min_col=2, min_row=2, max_row=ws4.max_row)
+
+    chart2.add_data(data2, titles_from_data=True)
+    chart2.set_categories(cats2)
+
+    # --- Etiquetas de datos: solo el valor, formato compacto ---
+    chart2.dataLabels = openpyxl.chart.label.DataLabelList()
+    chart2.dataLabels.showVal = True
+    chart2.dataLabels.showSerName = False
+    chart2.dataLabels.showCatName = False
+    chart2.dataLabels.showPercent = False
+    chart2.dataLabels.showLegendKey = False
+    chart2.dataLabels.numFmt = "$#,##0"
+    chart2.dataLabels.position = "outEnd"   # etiqueta fuera de la barra, evita solaparse
+
+    # --- Eje Y: nombres a la izquierda, orden de arriba a abajo igual a la tabla ---
+    chart2.y_axis.tickLblPos = "low"
+    chart2.y_axis.scaling.orientation = "maxMin"
+    chart2.y_axis.delete = False
+    chart2.y_axis.majorGridlines = None
+
+
+    # --- Eje X (valores) ---
+    chart2.x_axis.numFmt = "$#,##0"
+    chart2.x_axis.delete = False
+    
+    # --- Leyenda: arriba, fuera del área de barras ---
+    chart2.legend.position = "l"
+    chart2.legend.overlay = False
+
+    # --- Colores institucionales ---
+    if len(chart2.series) >= 2:
+        chart2.series[0].graphicalProperties.solidFill = "7F7F7F"  # Presupuesto Definitivo - gris
+        chart2.series[1].graphicalProperties.solidFill = "00B050"  # Recaudos - verde
+
+    # --- Dimensiones amplias para que respiren etiquetas y nombres ---
+    chart2.height = 16
+    chart2.width = 38
+
+    ws_graf.add_chart(chart2, "B2")
+
+
+    # ==========================================================================
+    # HOJA NUEVA: GRAFICOS - "Informe de Recaudo - Principales Ingresos Tributarios"
+    # ==========================================================================
+    ws_graf2 = wb_nuevo.create_sheet("GRAF PRINCIPALES IMPUESTOS")
+
+    ws_graf2["A1"] = "NOMBRE"
+    ws_graf2["B1"] = "PRESUPUESTO DEFINITIVO"
+    ws_graf2["C1"] = "RECAUDOS"
+
+    # ── DINÁMICO: obtener el top desde el DataFrame ──────────────────────────
+    df_ingresos = ad.cargar_ingresos(archivo_ingresos)
+    top_df = ad.top_impuestos_tributarios(df_ingresos, n=3)
+    encabezados_ing = {}
+    for col in range(1, ws1.max_column + 1):
+        v = ws1.cell(row=1, column=col).value
+        if v is not None:
+            encabezados_ing[str(v).strip().upper()] = col
+
+    idx_nombre_ing = encabezados_ing.get("NOMBRE")
+    idx_presup_ing = encabezados_ing.get("PRESUPUESTO  DEFINITIVO")   # doble espacio
+    idx_recaudo_ing = encabezados_ing.get("RECAUDOS")
+
+    # Construir un set con los nombres del top para búsqueda rápida
+    nombres_top = set(top_df["NOMBRE"].astype(str).str.strip().str.upper())
+
+    fila_g2 = 2
+    for nombre_obj in nombres_top:
+        for fila in range(2, ws1.max_row + 1):
+            nombre_val = ws1.cell(row=fila, column=idx_nombre_ing).value
+            if nombre_val is not None and str(nombre_val).strip().upper() == nombre_obj:
+                col_p = get_column_letter(idx_presup_ing)
+                col_r = get_column_letter(idx_recaudo_ing)
+                ws_graf2.cell(row=fila_g2, column=1, value=nombre_val)
+                ws_graf2.cell(row=fila_g2, column=2, value=f"=INGRESOS!{col_p}{fila}")
+                ws_graf2.cell(row=fila_g2, column=3, value=f"=INGRESOS!{col_r}{fila}")
+                ws_graf2[f"B{fila_g2}"].number_format = '$#,##0.00'
+                ws_graf2[f"C{fila_g2}"].number_format = '$#,##0.00'
+                fila_g2 += 1
+                break
+
+    # --- Gráfico de columnas verticales ---
+    chart3 = BarChart()
+    chart3.type = "col"
+    chart3.grouping = "clustered"
+    chart3.overlap = -10
+    chart3.gapWidth = 150
+    chart3.style = 10
+
+    # Título dinámico con los nombres del top
+    nombres_grafico = " | ".join(top_df["NOMBRE"].astype(str).str.title().tolist())
+    chart3.title = f"Informe de Recaudo - Principales Ingresos Tributarios"
+
+    data3 = Reference(ws_graf2, min_col=2, min_row=1, max_col=3, max_row=fila_g2 - 1)
+    cats3 = Reference(ws_graf2, min_col=1, min_row=2, max_row=fila_g2 - 1)
+
+    chart3.add_data(data3, titles_from_data=True)
+    chart3.set_categories(cats3)
+
+    chart3.dataLabels = openpyxl.chart.label.DataLabelList()
+    chart3.dataLabels.showVal = True
+    chart3.dataLabels.showSerName = False
+    chart3.dataLabels.showCatName = False
+    chart3.dataLabels.showPercent = False
+    chart3.dataLabels.showLegendKey = False
+    chart3.dataLabels.numFmt = '$#,##0.00'
+    chart3.dataLabels.position = "outEnd"
+
+    chart3.x_axis.delete = False
+    chart3.y_axis.delete = True
+    chart3.y_axis.majorGridlines = None
+
+
+    chart3.legend.position = "b"
+    chart3.legend.overlay = False
+
+    if len(chart3.series) >= 2:
+        chart3.series[0].graphicalProperties.solidFill = "1F77B4"
+        chart3.series[1].graphicalProperties.solidFill = "BFBFBF"
+
+    chart3.height = 10
+    chart3.width = 22
+
+    ws_graf2.add_chart(chart3, "E2")
+
 
     wb_nuevo.save(archivo_salida)
     return archivo_salida
