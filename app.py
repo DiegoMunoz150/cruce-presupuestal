@@ -4,6 +4,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, U
 from flask_bcrypt import Bcrypt
 from motor_excel import generar_cruce
 import os
+import analisis_datos
 
 # ======================
 # APP Permisos y Configuración Prueba test_2
